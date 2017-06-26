@@ -3,6 +3,7 @@ defmodule Mailchimp.Account do
   alias Mailchimp.HTTPClient
   alias Mailchimp.Link
   alias Mailchimp.List
+  alias Mailchimp.Member
 
   defstruct account_id: nil, account_name: nil, contact: nil, last_login: nil, total_subscribers: 0, links: []
 
@@ -33,6 +34,19 @@ defmodule Mailchimp.Account do
     case response do
       %Response{status_code: 200, body: body} ->
         {:ok, Enum.map(body.lists, &List.new(&1))}
+
+      %Response{status_code: _, body: body} ->
+        {:error, body}
+    end
+  end
+
+  def search_members(query, options \\ %{}) do
+    url = "/search-members?" <> URI.encode_query(Map.merge(options, %{query: query}))
+
+    {:ok, response} = HTTPClient.get(url)
+    case response do
+      %Response{status_code: 200, body: body} ->
+        {:ok, Enum.map(body.exact_matches.members, &Member.new(&1))}
 
       %Response{status_code: _, body: body} ->
         {:error, body}
