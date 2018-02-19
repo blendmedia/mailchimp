@@ -5,6 +5,8 @@ defmodule Mailchimp.Account do
   alias Mailchimp.List
   alias Mailchimp.Member
 
+  require Logger
+
   defstruct account_id: nil, account_name: nil, contact: nil, last_login: nil, total_subscribers: 0, links: []
 
   def new(attributes) do
@@ -35,6 +37,19 @@ defmodule Mailchimp.Account do
       %Response{status_code: 200, body: body} ->
         {:ok, Enum.map(body.lists, &List.new(&1))}
 
+      %Response{status_code: _, body: body} ->
+        {:error, body}
+    end
+  end
+
+  def list(list_id) do
+    url = "/lists/#{list_id}"
+
+    {:ok, response} = HTTPClient.get(url)
+    case response do
+      %Response{status_code: 200, body: body} ->
+        list = Mailchimp.List.new(body)
+        {:ok, list}
       %Response{status_code: _, body: body} ->
         {:error, body}
     end

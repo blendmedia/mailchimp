@@ -24,8 +24,10 @@ defmodule Mailchimp.Mixfile do
   end
 
   defp deps do
-    [{:httpoison, "~> 0.9"},
-     {:poison, "~> 2.2.0"}]
+    [
+      {:httpoison, "~> 0.9"},
+      {:poison, "~> 2.2.0"}
+    ]
   end
 
   defp package do
@@ -33,5 +35,11 @@ defmodule Mailchimp.Mixfile do
      maintainers: ["Jean Duarte"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/duartejc/mailchimp"}]
+  end
+
+  defp aliases do
+    [
+      "test.external": ["test --only external"]
+    ]
   end
 end

@@ -4,3 +4,5 @@ use Mix.Config
 
 config :mailchimp,
   apikey: "your apikey-us12"
+
+import_config "#{Mix.env}.exs"
