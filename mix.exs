@@ -36,10 +36,4 @@ defmodule Mailchimp.Mixfile do
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/duartejc/mailchimp"}]
   end
-
-  defp aliases do
-    [
-      "test.external": ["test --only external"]
-    ]
-  end
 end
